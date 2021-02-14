@@ -8,7 +8,7 @@
 using namespace std;
 using namespace chrono;
 
-time_t parseTime(string time24, TimePoint_s ref1, TimePoint ref2);
+time_t parseTime(string time24);
 Task* timeCheck(vector<Task> tdl);
 
 
@@ -34,7 +34,7 @@ int main(){
     time_t currTime;
     time(&currTime);
     
-    ten = parseTime("23:00", referenceTime1, referenceTime2);
+    ten = parseTime("23:00");
     printf("the parsed eleven o'clock would be %s", ctime(&ten));
     printf("it is currently %s", ctime(&currTime));
 
