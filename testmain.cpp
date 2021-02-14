@@ -16,7 +16,8 @@ int main(){
     
     char firefox[] = "\"C:\\Program Files\\Mozilla Firefox\\firefox.exe\"";
     char google[] = "google.com";
-    char zoom[] = "C:\\Users\\Jarred\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
+    // char zoom[] = "..\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
+    char zoom[] = "C:\\Users\\new22\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
 
     Task *openGoogle = new Task("open google", parseTime("22:15", referenceTime1, referenceTime2), firefox, google);
 
@@ -30,6 +31,12 @@ int main(){
 
     time(&currTime);
     printf("the current date/time is %s", ctime(&currTime));
+
+    char MSWord[] = "\"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\"";
+    char file[] = "\"D:\\UBC Accessibility.docx\"";
+
+
+    runProgram(MSWord, file);
 
     return 0;
 }
