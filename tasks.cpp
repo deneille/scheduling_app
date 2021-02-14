@@ -1,19 +1,19 @@
 #include <cstring>
 #include "tasks.hpp"
 
-Task::Task(std::string name, time_t sTime){
+Task::Task(string name, time_t sTime){
     taskName = name;
     scheduledTime = sTime;
 }
 
-Task::Task(std::string name, time_t sTime, char* prog, char* file){
+Task::Task(string name, time_t sTime, char* prog, char* file){
     taskName = name;
     scheduledTime = sTime;
     strcpy(program, prog);
     strcpy(destFile, file);
 }
 
-Task::Task(std::string name, time_t sTime, char* prog){
+Task::Task(string name, time_t sTime, char* prog){
     taskName = name;
     scheduledTime = sTime;
     strcpy(program, prog);
@@ -21,8 +21,8 @@ Task::Task(std::string name, time_t sTime, char* prog){
 }
 
 
-std::string Task::getName(){
-    std::string name = taskName;
+string Task::getName(){
+    string name = taskName;
     return name;
 }
 
@@ -36,7 +36,7 @@ char* Task::getFilename(){
     return destFile;
 }
 
-void Task::editName(std::string name){
+void Task::editName(string name){
     taskName = name;
 }
 void Task::editSTime(time_t sTime){
