@@ -6,54 +6,46 @@
 #include <string>
 #include <thread>
 
+
 using namespace std;
 using namespace chrono;
 
 time_t parseTime(string time24);
-int timeCheck(vector<Task> tdl);
-void executeLoop(vector<Task>);
+int timeCheck(vector<Task*> tdl);
+void executeLoop(vector<Task*>);
 
 
 int main(){
 
-    vector<Task> todo = vector<Task>();
-
+    vector<Task*> todo = vector<Task*>();
     
+
     char firefox[] = "\"..\\..\\..\\..\\..\\Program Files\\Mozilla Firefox\\firefox.exe\"";
     char google[] = "google.com";
     char zoom[] = "C:\\Users\\Jarred\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
 
-    Task openGoogle =  Task("open google", parseTime("03:01"), firefox, google);
+    Task *openGoogle = new Task("open google", parseTime("03:01"), firefox, google);
     todo.push_back(openGoogle);
-    Task zoomTask =  Task("zoom lecture !", parseTime("03:00"), zoom);
+    Task *zoomTask = new Task("zoom lecture !", parseTime("03:00"), zoom);
     todo.push_back(zoomTask);
-
-    cout << openGoogle.getProgram() << "  " << openGoogle.getFilename() << endl;
-    cout << zoomTask.getProgram() << "  " << zoomTask.getFilename() << endl;
 
     thread timeMonitorThread(executeLoop, todo);
 
     this_thread::sleep_for (std::chrono::minutes(5));
 
-    // char MSWord[] = "\"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\"";
-    // char file[] = "\"D:\\UBC Accessibility.docx\"";
-
-
-    // runProgram(MSWord, file);
-
     return 0;
 }
 
-void executeLoop(vector<Task> todo){
+void executeLoop(vector<Task*> todo){
     int index;
     while(!todo.empty()){
     index = timeCheck(todo);
-    runProgram(todo[index].getProgram(), todo[index].getFilename());
+    runProgram(todo[index]->getProgram(), todo[index]->getFilename());
     todo.erase(todo.begin()+index);
     }
 }
 
-int timeCheck(vector<Task> tdl){
+int timeCheck(vector<Task*> tdl){
     bool match = false;
     double seconds; //no guarantee when its checked so i want a 2 minute safety net
     time_t currTime;
@@ -62,7 +54,7 @@ int timeCheck(vector<Task> tdl){
     do{
         time(&currTime);
         for (i = 0; i != tdl.size() && !match; i++){
-            seconds = difftime(currTime, tdl[i].getSTime());
+            seconds = difftime(currTime, tdl[i]->getSTime());
             if(seconds > 0 && seconds < 120){
                 match = true;
                 return i;
