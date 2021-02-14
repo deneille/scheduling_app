@@ -27,10 +27,13 @@ int main(){
 
     runProgram(zoom);
 
+    time_t ten;
     time_t currTime;
-
     time(&currTime);
-    printf("the current date/time is %s", ctime(&currTime));
+    
+    ten = parseTime("23:00", referenceTime1, referenceTime2);
+    printf("the parsed eleven o'clock would be %s", ctime(&ten));
+    printf("it is currently %s", ctime(&currTime));
 
     char MSWord[] = "\"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\"";
     char file[] = "\"D:\\UBC Accessibility.docx\"";
