@@ -13,41 +13,58 @@
     <script src='fullcalendar-5.5.1/lib/main.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var date = new Date();
-            var dd = date.getDate(),
-            mm = date.getMonth(),
-            yyyy = date.getFullYear();
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                initialDate: new Date(yyyy, mm, dd),
                 headerToolbar: {
-                    left: 'prev,next today',
+                    left: 'prev,next today addEventButton',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay',
-                }});
-        calendar.render();
-      });
+                },
+                customButtons: {
+                    addEventButton: {
+                        text: 'Add Event',
+                        click: function() {
+                            var dateStr = prompt('Enter a date in YYYY-MM-DD format');
+                            //var time = prompt('Enter a time in T00:00:00');
+                            var eventDuration = prompt('Enter duration in 00:00 format')
+                            var date = new Date(dateStr + 'T00:00:00' ); // will be in local time
 
+                            if (!isNaN(date.valueOf())) { // valid?
+                                calendar.addEvent({
+                                    title: 'dynamic event',
+                                    start: date,
+                                    time: date.getTime(),
+                                    slotDuration: eventDuration,
+                                    allDay: false
+                                });
+                            } else {
+                                alert('Invalid date.');
+                            }
+                        }
+                    }
+                },
+                eventMouseEnter: function(info) {
+                    alert('Event: ' + info.event.title);
+                    alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+                    alert('View: ' + info.view.type);
+                    // change the border color just for fun
+                    var today = new Date();
+                    var d = String(today.getDate()).padStart(2, '0');
+                    var m = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    var yy = today.getFullYear();
+                    today = yy + '-' + m + '-' + d;
+                    info.el.style.borderColor = 'red';
+                    window.location.href = 'page.html';
+                }
+            });
+
+            calendar.render();
+        });
     </script>
 </head>
 <body>
     <div id='calendar'></div>
-    <!--<img src="https://cdn.dribbble.com/users/4859/screenshots/5966595/fitness_club-statics_schedule.png">
-
-    <div class="calendar">
-        <div class="month">
-
-        </div>
-    </div>
-    <div class = "row">
-         <form class = "col s12">
-            <div class = "row">
-               <label>Materialize DatePicker</label>
-               <input type = "date" class = "datepicker" />
-            </div>
-         </form>
-      </div>-->
 
 
 </body>
