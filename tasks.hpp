@@ -2,15 +2,20 @@
 #define TASKS_H
 
 #include <filesystem>
-#include <ctime>
+#include <chrono>
 #include <string>
 #define MAX_PATH   260 //in windows max path length is 260 characters but idk where its defined so i made this
 
+using systemClock = std::chrono::system_clock;
+using TimePoint_s = systemClock::time_point;
+using Clock = std::chrono::steady_clock;
+using TimePoint = std::chrono::time_point<Clock>;
 
 class Task {
   public:
     Task(std::string, time_t);
     Task(std::string, time_t, char*, char*);
+    Task(std::string, time_t, char*);
 
     std::string getName();
     time_t getSTime();

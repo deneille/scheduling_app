@@ -1,3 +1,4 @@
+#include <cstring>
 #include "tasks.hpp"
 
 Task::Task(std::string name, time_t sTime){
@@ -10,6 +11,12 @@ Task::Task(std::string name, time_t sTime, char* prog, char* file){
     scheduledTime = sTime;
     strcpy(program, prog);
     strcpy(destFile, file);
+}
+
+Task::Task(std::string name, time_t sTime, char* prog){
+    taskName = name;
+    scheduledTime = sTime;
+    strcpy(program, prog);
 }
 
 
