@@ -17,6 +17,7 @@ Task::Task(std::string name, time_t sTime, char* prog){
     taskName = name;
     scheduledTime = sTime;
     strcpy(program, prog);
+    strcpy(destFile, '\0');
 }
 
 
