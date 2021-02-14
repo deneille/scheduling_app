@@ -1,75 +1,84 @@
 #include "appOpener.hpp"
 #include "tasks.hpp"
-#include <stdio.h>
+#include <iostream>
 #include <vector>
 #include <chrono>
 #include <string>
+#include <thread>
+
 
 using namespace std;
 using namespace chrono;
 
 time_t parseTime(string time24);
-Task* timeCheck(vector<Task> tdl);
+int timeCheck(vector<Task*> tdl);
+void executeLoop(vector<Task*>);
 
 
 int main(){
 
-    TimePoint_s referenceTime1 = systemClock::now();
-    TimePoint referenceTime2 = Clock::now();
+    vector<Task*> todo = vector<Task*>();
     
-    char firefox[] = "\"C:\\Program Files\\Mozilla Firefox\\firefox.exe\"";
+
+    char firefox[] = "\"..\\..\\..\\..\\..\\Program Files\\Mozilla Firefox\\firefox.exe\"";
     char google[] = "google.com";
-    // char zoom[] = "..\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
-    char zoom[] = "C:\\Users\\new22\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
+    char zoom[] = "C:\\Users\\Jarred\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
 
-    Task *openGoogle = new Task("open google", parseTime("22:15"), firefox, google);
+    Task *openGoogle = new Task("open google", parseTime("03:01"), firefox, google);
+    todo.push_back(openGoogle);
+    Task *zoomTask = new Task("zoom lecture !", parseTime("03:00"), zoom);
+    todo.push_back(zoomTask);
 
-    Task *zoomTask = new Task("zoom lecture !", parseTime("22:15"), zoom);
+    thread timeMonitorThread(executeLoop, todo);
 
-    runProgram(firefox, google);
-
-    runProgram(zoom);
-
-    time_t ten;
-    time_t currTime;
-    time(&currTime);
-    
-    ten = parseTime("23:00");
-    printf("the parsed eleven o'clock would be %s", ctime(&ten));
-    printf("it is currently %s", ctime(&currTime));
-
-    char MSWord[] = "\"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\"";
-    char file[] = "\"D:\\UBC Accessibility.docx\"";
-
-
-    runProgram(MSWord, file);
+    this_thread::sleep_for (std::chrono::minutes(5));
 
     return 0;
 }
 
+void executeLoop(vector<Task*> todo){
+    int index;
+    while(!todo.empty()){
+    index = timeCheck(todo);
+    runProgram(todo[index]->getProgram(), todo[index]->getFilename());
+    todo.erase(todo.begin()+index);
+    }
+}
 
-Task* timeCheck(vector<Task> tdl){
+int timeCheck(vector<Task*> tdl){
     bool match = false;
     double seconds; //no guarantee when its checked so i want a 2 minute safety net
     time_t currTime;
-    vector<Task>::iterator it;
+    int i;
+    time_t stime;
     do{
         time(&currTime);
-        for (it = tdl.begin() ; it != tdl.end(); ++it){
-            seconds = difftime(currTime, it->getSTime());
+        for (i = 0; i != tdl.size() && !match; i++){
+            seconds = difftime(currTime, tdl[i]->getSTime());
             if(seconds > 0 && seconds < 120){
                 match = true;
+                return i;
             }
         }
-    }while(!match);
-    return &(*it);
+    }while(1);
+
 }
 
-time_t parseTime(std::string time24) {
+time_t parseTime(string time24){
     size_t idx = 0;
-    Clock::duration hrs = hours(stoi(time24, &idx, 10));
-    Clock::duration mins = minutes(stoi(time24, &idx, 10));
-    Clock::duration secs = duration_cast<seconds>(hrs) + duration_cast<seconds>(mins);
-    TimePoint desiredTime(secs);
-    return  systemClock::to_time_t(systemClock::now() + duration_cast<systemClock::duration>(desiredTime - Clock::now()));
+    int hrs = stoi(time24, &idx, 10);
+    idx = 3;
+    int mins = stoi(time24.substr(idx) , &idx, 10);
+    time_t now;
+
+    time(&now);
+    struct tm* tm = localtime(&now);
+    tm->tm_hour += hrs - tm->tm_hour;
+    tm->tm_min += mins - tm->tm_min;
+    tm->tm_sec = 0;
+    return mktime(tm);
 }
+
+
+  
+

@@ -1,4 +1,3 @@
-#finish writing this
 
 testmain: appOpener.o tasks.o
 	g++ testmain.cpp appOpener.o tasks.o
