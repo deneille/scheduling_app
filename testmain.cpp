@@ -22,9 +22,9 @@ int main(){
     // char zoom[] = "..\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
     char zoom[] = "C:\\Users\\new22\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
 
-    Task *openGoogle = new Task("open google", parseTime("22:15", referenceTime1, referenceTime2), firefox, google);
+    Task *openGoogle = new Task("open google", parseTime("22:15"), firefox, google);
 
-    Task *zoomTask = new Task("zoom lecture !", parseTime("22:15", referenceTime1, referenceTime2), zoom);
+    Task *zoomTask = new Task("zoom lecture !", parseTime("22:15"), zoom);
 
     runProgram(firefox, google);
 
