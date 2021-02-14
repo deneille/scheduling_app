@@ -22,24 +22,21 @@ int main(){
     char firefox[] = "\"..\\..\\..\\..\\..\\Program Files\\Mozilla Firefox\\firefox.exe\"";
     char google[] = "google.com";
     char zoom[] = "C:\\Users\\Jarred\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
+    char MSWord[] = "\"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\"";
+    char file[] = "\"D:\\UBC Accessibility.docx\"";
 
-    Task openGoogle =  Task("open google", parseTime("03:01"), firefox, google);
+    Task openGoogle =  Task("open google", parseTime("08:54"), firefox, google);
     todo.push_back(openGoogle);
-    Task zoomTask =  Task("zoom lecture !", parseTime("03:00"), zoom);
+    Task wordFile =  Task("essay stuff?", parseTime("08:54"), MSWord, file);
+    todo.push_back(wordFile);
+    Task zoomTask =  Task("zoom lecture !", parseTime("08:55"), zoom);
     todo.push_back(zoomTask);
-
-    cout << openGoogle.getProgram() << "  " << openGoogle.getFilename() << endl;
-    cout << zoomTask.getProgram() << "  " << zoomTask.getFilename() << endl;
 
     thread timeMonitorThread(executeLoop, todo);
 
     this_thread::sleep_for (std::chrono::minutes(5));
 
-    // char MSWord[] = "\"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\"";
-    // char file[] = "\"D:\\UBC Accessibility.docx\"";
 
-
-    // runProgram(MSWord, file);
 
     return 0;
 }
