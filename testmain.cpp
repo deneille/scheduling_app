@@ -5,8 +5,11 @@
 #include <chrono>
 #include <string>
 
-time_t parseTime(std::string time24, TimePoint_s ref1, TimePoint ref2);
-Task* timeCheck(std::vector<Task> tdl);
+using namespace std;
+using namespace chrono;
+
+time_t parseTime(string time24, TimePoint_s ref1, TimePoint ref2);
+Task* timeCheck(vector<Task> tdl);
 
 
 int main(){
@@ -45,11 +48,11 @@ int main(){
 }
 
 
-Task* timeCheck(std::vector<Task> tdl){
+Task* timeCheck(vector<Task> tdl){
     bool match = false;
     double seconds; //no guarantee when its checked so i want a 2 minute safety net
     time_t currTime;
-    std::vector<Task>::iterator it;
+    vector<Task>::iterator it;
     do{
         time(&currTime);
         for (it = tdl.begin() ; it != tdl.end(); ++it){
@@ -64,9 +67,9 @@ Task* timeCheck(std::vector<Task> tdl){
 
 time_t parseTime(std::string time24) {
     size_t idx = 0;
-    Clock::duration hours = std::chrono::hours(stoi(time24, &idx, 10));
-    Clock::duration mins = std::chrono::minutes(stoi(time24, &idx, 10));
-    Clock::duration secs = std::chrono::duration_cast<std::chrono::seconds>(hours) + std::chrono::duration_cast<std::chrono::seconds>(mins);
+    Clock::duration hrs = hours(stoi(time24, &idx, 10));
+    Clock::duration mins = minutes(stoi(time24, &idx, 10));
+    Clock::duration secs = duration_cast<seconds>(hrs) + duration_cast<seconds>(mins);
     TimePoint desiredTime(secs);
-    return  systemClock::to_time_t(systemClock::now() + std::chrono::duration_cast<systemClock::duration>(desiredTime - Clock::now()));;;
+    return  systemClock::to_time_t(systemClock::now() + duration_cast<systemClock::duration>(desiredTime - Clock::now()));;;
 }
