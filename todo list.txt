@@ -9,3 +9,10 @@ COMPLETED TASKS:
 
 2. MAKE A THREAD THAT LOOPS THE TASKS AND RETURNS ONE WHEN ITS TIME TO EXECUTE
 5. MAKE THE THREAD/LOOP TO CYCLE THE TASKS
+
+
+
+
+use .json file to save/load AND pass Task information between frontend js code and backend cpp code??
+easy way to input a Task could just be retrieving the information in the UI and passing it through the .json
+so the backend picks it up by re-reading the save/load file every couple minutes or something
