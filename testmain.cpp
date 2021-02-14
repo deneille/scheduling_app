@@ -68,9 +68,9 @@ Task* timeCheck(vector<Task> tdl){
 
 time_t parseTime(string time24){
     size_t idx = 0;
-    int hrs = (stoi(time24, &idx, 10));
+    int hrs = stoi(time24, &idx, 10);
     idx = 3;
-    int mins = (stoi(time24.substr(idx) , &idx, 10));
+    int mins = stoi(time24.substr(idx) , &idx, 10);
     time_t now;
 
     time(&now);
