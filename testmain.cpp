@@ -71,5 +71,5 @@ time_t parseTime(std::string time24) {
     Clock::duration mins = minutes(stoi(time24, &idx, 10));
     Clock::duration secs = duration_cast<seconds>(hrs) + duration_cast<seconds>(mins);
     TimePoint desiredTime(secs);
-    return  systemClock::to_time_t(systemClock::now() + duration_cast<systemClock::duration>(desiredTime - Clock::now()));;;
+    return  systemClock::to_time_t(systemClock::now() + duration_cast<systemClock::duration>(desiredTime - Clock::now()));
 }
