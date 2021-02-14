@@ -62,7 +62,7 @@ Task* timeCheck(std::vector<Task> tdl){
     return &(*it);
 }
 
-time_t parseTime(std::string time24, TimePoint_s ref1, TimePoint ref2){
+time_t parseTime(std::string time24) {
     size_t idx = 0;
     Clock::duration hours = std::chrono::hours(stoi(time24, &idx, 10));
     Clock::duration mins = std::chrono::minutes(stoi(time24, &idx, 10));
