@@ -8,10 +8,7 @@
 
 using namespace std;
 using namespace chrono;
-using systemClock = system_clock;
-using TimePoint_s = systemClock::time_point;
-using Clock = steady_clock;
-using TimePoint = time_point<Clock>;
+
 
 class Task {
   public:

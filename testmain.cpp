@@ -4,40 +4,36 @@
 #include <vector>
 #include <chrono>
 #include <string>
+#include <thread>
 
 using namespace std;
 using namespace chrono;
 
 time_t parseTime(string time24);
-Task* timeCheck(vector<Task> tdl);
+int timeCheck(vector<Task> tdl);
+void executeLoop(vector<Task>);
 
 
 int main(){
 
-    TimePoint_s referenceTime1 = systemClock::now();
-    TimePoint referenceTime2 = Clock::now();
+    vector<Task> todo = vector<Task>();
+
     
     char firefox[] = "\"..\\..\\..\\..\\..\\Program Files\\Mozilla Firefox\\firefox.exe\"";
     char google[] = "google.com";
-    char zoom[] = "C:\\Users\\new22\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
+    char zoom[] = "C:\\Users\\Jarred\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe";
 
-    // Task *openGoogle = new Task("open google", parseTime("22:15"), firefox, google);
+    Task openGoogle =  Task("open google", parseTime("03:01"), firefox, google);
+    todo.push_back(openGoogle);
+    Task zoomTask =  Task("zoom lecture !", parseTime("03:00"), zoom);
+    todo.push_back(zoomTask);
 
-    // Task *zoomTask = new Task("zoom lecture !", parseTime("22:15"), zoom);
+    cout << openGoogle.getProgram() << "  " << openGoogle.getFilename() << endl;
+    cout << zoomTask.getProgram() << "  " << zoomTask.getFilename() << endl;
 
-    runProgram(firefox, google);
+    thread timeMonitorThread(executeLoop, todo);
 
-    runProgram(zoom);
-
-    time_t timeTest;
-    time_t currTime;
-    time(&currTime);
-
-    string eleven45 = "23:45";
-    cout << "passing " << eleven45 << " \n";
-    timeTest = parseTime(eleven45);
-    printf("the parsed eleven thirty would be %s", ctime(&timeTest));
-    printf("it is currently %s", ctime(&currTime));
+    this_thread::sleep_for (std::chrono::minutes(5));
 
     // char MSWord[] = "\"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\"";
     // char file[] = "\"D:\\UBC Accessibility.docx\"";
@@ -48,22 +44,32 @@ int main(){
     return 0;
 }
 
+void executeLoop(vector<Task> todo){
+    int index;
+    while(!todo.empty()){
+    index = timeCheck(todo);
+    runProgram(todo[index].getProgram(), todo[index].getFilename());
+    todo.erase(todo.begin()+index);
+    }
+}
 
-Task* timeCheck(vector<Task> tdl){
+int timeCheck(vector<Task> tdl){
     bool match = false;
     double seconds; //no guarantee when its checked so i want a 2 minute safety net
     time_t currTime;
-    vector<Task>::iterator it;
+    int i;
+    time_t stime;
     do{
         time(&currTime);
-        for (it = tdl.begin() ; it != tdl.end(); ++it){
-            seconds = difftime(currTime, it->getSTime());
+        for (i = 0; i != tdl.size() && !match; i++){
+            seconds = difftime(currTime, tdl[i].getSTime());
             if(seconds > 0 && seconds < 120){
                 match = true;
+                return i;
             }
         }
-    }while(!match);
-    return &(*it);
+    }while(1);
+
 }
 
 time_t parseTime(string time24){
